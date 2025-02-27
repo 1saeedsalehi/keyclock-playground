@@ -1,0 +1,2 @@
+# File: META-INF/services/org.keycloak.authentication.AuthenticatorFactory
+org.example.keycloak.authenticator.CustomAuthenticatorFactory

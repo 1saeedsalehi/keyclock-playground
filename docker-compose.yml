@@ -1,0 +1,38 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.1.2
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+    ports:
+      - "8080:8080"
+    command: start-dev
+      --spi-theme-static-max-age=-1
+      --spi-theme-cache-themes=false
+      --spi-theme-cache-templates=false
+    depends_on:
+      - postgres
+      
+    networks:
+      - keycloak-network
+    volumes:
+      - ./themes:/opt/keycloak/themes/
+      - ./CustomSPI:/opt/keycloak/providers
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=keycloak
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - keycloak-network
+
+volumes:
+  postgres_data:
+
+networks:
+  keycloak-network:
